@@ -1,0 +1,29 @@
+#------------------------------------------------------------------------------
+VERSION = BWS.01
+#------------------------------------------------------------------------------
+!ifndef ROOT
+ROOT = $(MAKEDIR)\..
+!endif
+#------------------------------------------------------------------------------
+MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
+DCC = $(ROOT)\bin\dcc32.exe $**
+BRCC = $(ROOT)\bin\brcc32.exe $**
+#------------------------------------------------------------------------------
+PROJECTS = SYIPC.dll IPCDUnit.exe IPCClient.exe IPCServer.exe
+#------------------------------------------------------------------------------
+default: $(PROJECTS)
+#------------------------------------------------------------------------------
+
+IPCDUnit.exe: Dunit\IPCDUnit.dpr
+  $(DCC)
+
+SYIPC.dll: Src\SYIPC.dpr
+  $(DCC)
+
+IPCClient.exe: Demo\IPCClient\IPCClient.dpr
+  $(DCC)
+
+IPCServer.exe: Demo\IPCServer\IPCServer.dpr
+  $(DCC)
+
+

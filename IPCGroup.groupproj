@@ -1,0 +1,72 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{1A6DE294-4790-46AC-A353-51A2F00F23A1}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="Src\SYIPC.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Dunit\IPCDUnit.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo\IPCClient\IPCClient.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="Demo\IPCServer\IPCServer.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="SYIPC">
+			<MSBuild Projects="Src\SYIPC.dproj"/>
+		</Target>
+		<Target Name="SYIPC:Clean">
+			<MSBuild Targets="Clean" Projects="Src\SYIPC.dproj"/>
+		</Target>
+		<Target Name="SYIPC:Make">
+			<MSBuild Targets="Make" Projects="Src\SYIPC.dproj"/>
+		</Target>
+		<Target Name="IPCDUnit">
+			<MSBuild Projects="Dunit\IPCDUnit.dproj"/>
+		</Target>
+		<Target Name="IPCDUnit:Clean">
+			<MSBuild Targets="Clean" Projects="Dunit\IPCDUnit.dproj"/>
+		</Target>
+		<Target Name="IPCDUnit:Make">
+			<MSBuild Targets="Make" Projects="Dunit\IPCDUnit.dproj"/>
+		</Target>
+		<Target Name="IPCClient">
+			<MSBuild Projects="Demo\IPCClient\IPCClient.dproj"/>
+		</Target>
+		<Target Name="IPCClient:Clean">
+			<MSBuild Targets="Clean" Projects="Demo\IPCClient\IPCClient.dproj"/>
+		</Target>
+		<Target Name="IPCClient:Make">
+			<MSBuild Targets="Make" Projects="Demo\IPCClient\IPCClient.dproj"/>
+		</Target>
+		<Target Name="IPCServer">
+			<MSBuild Projects="Demo\IPCServer\IPCServer.dproj"/>
+		</Target>
+		<Target Name="IPCServer:Clean">
+			<MSBuild Targets="Clean" Projects="Demo\IPCServer\IPCServer.dproj"/>
+		</Target>
+		<Target Name="IPCServer:Make">
+			<MSBuild Targets="Make" Projects="Demo\IPCServer\IPCServer.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="SYIPC;IPCDUnit;IPCClient;IPCServer"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="SYIPC:Clean;IPCDUnit:Clean;IPCClient:Clean;IPCServer:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="SYIPC:Make;IPCDUnit:Make;IPCClient:Make;IPCServer:Make"/>
+		</Target>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
+	</Project>
