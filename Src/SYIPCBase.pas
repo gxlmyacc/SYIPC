@@ -211,7 +211,7 @@ begin
         try
           if FDispatch = nil then
           begin
-            LResultMessage.Add('IPC·şÎñ¶ËÎ´×¢²áDispatchÊôĞÔ£¡');
+            LResultMessage.Add('IPCæœåŠ¡ç«¯æœªæ³¨å†ŒDispatchå±æ€§ï¼');
             LResultMessage.DataType := mdtError;
           end
           else
@@ -236,9 +236,10 @@ begin
                 LArgs[i] := M2V(LMessage);
                 if TVarData(LArgs[i]).VType = varError then
                 begin
-                  LResultMessage.Add(Format('²»Ö§³ÖµÄÀàĞÍ[%d]£¡', [LParam.Type_]));
+                  LResultMessage.Add(Format('ä¸æ”¯æŒçš„ç±»å‹[%d]ï¼', [LParam.Type_]));
                   LResultMessage.DataType := mdtError;
                 end;
+                LData := LData + LParam.Size;	
               end;
               oResult := _DispatchInvoke(FDispatch, PWideChar(sMethodName), LArgs);
               LResultMessage := V2M(oResult);
@@ -362,9 +363,9 @@ procedure TIPCBase.SetSessionName(const Value: WideString);
 begin
   if FSessionName = Value then
     Exit;
-  Assert(not FActive, 'IPC·şÎñ´ò¿ªÊ±²»ÄÜĞŞ¸ÄSessionName£¡');
+  Assert(not FActive, 'IPCæœåŠ¡æ‰“å¼€æ—¶ä¸èƒ½ä¿®æ”¹SessionNameï¼');
   if Length(Value) > IPC_SESSIONNAME_SIZE then
-    raise ESYIPCExection.CreateFmt('SessionName²»ÄÜ³¬¹ı%d¸ö×Ö·û£¡', [IPC_SESSIONNAME_SIZE]);
+    raise ESYIPCExection.CreateFmt('SessionNameä¸èƒ½è¶…è¿‡%dä¸ªå­—ç¬¦ï¼', [IPC_SESSIONNAME_SIZE]);
   FSessionName := Value;
 end;
 
@@ -397,7 +398,7 @@ begin
         Exit;
     end;
     Result := 0;
-    raise ESYIPCExection.Create('µ±Ç°·µ»Ø¶ÓÁĞÒÑÂú£¡');
+    raise ESYIPCExection.Create('å½“å‰è¿”å›é˜Ÿåˆ—å·²æ»¡ï¼');
   finally
     LeaveCriticalSection(FReturnQueueLock);
   end;   
@@ -515,16 +516,16 @@ var
   i: Integer;
   LParam: IIPCMessage;
 begin
-  Assert(not FDestroying, 'IPC¿Í»§¶ËÕıÔÚÏú»Ù£¡');
+  Assert(not FDestroying, 'IPCå®¢æˆ·ç«¯æ­£åœ¨é”€æ¯ï¼');
   Result := False;
   if AMethodName = '' then
   begin
-    FLastError := '·½·¨Ãû²»ÄÜÎª¿Õ£¡';
+    FLastError := 'æ–¹æ³•åä¸èƒ½ä¸ºç©ºï¼';
     Exit;
   end;
   if Length(AMethodName) > IPC_CALLMETHOD_SIZE then
   begin
-    FLastError :=  Format('·½·¨Ãû³Æ³¤¶È²»ÄÜ³¬¹ı[%d]¸ö×Ö·û£¡', [IPC_CALLMETHOD_SIZE]);
+    FLastError :=  Format('æ–¹æ³•åç§°é•¿åº¦ä¸èƒ½è¶…è¿‡[%d]ä¸ªå­—ç¬¦ï¼', [IPC_CALLMETHOD_SIZE]);
     Exit;
   end;
   bResTopic := DoAllocateReturnTopic;
@@ -544,13 +545,13 @@ begin
   end;
   if not DoSend(ASendID, LSendMessage, ATimeOut) then
   begin
-    FLastError :=  Format('[%s]½ÓÊÕ¶Ë·¢ËÍÊı¾İÊ§°Ü£º%s¡£', [FSessionName, FLastError]);
+    FLastError :=  Format('[%s]æ¥æ”¶ç«¯å‘é€æ•°æ®å¤±è´¥ï¼š%sã€‚', [FSessionName, FLastError]);
     Exit;  
   end;
   AResult := DoDeallocateReturnTopic(bResTopic);
   if AResult = nil then
   begin
-    FLastError :=  Format('[%s]½ÓÊÕ¶ËÎ´ÏìÓ¦[%s]·½·¨£¡', [FSessionName, AMethodName]);
+    FLastError :=  Format('[%s]æ¥æ”¶ç«¯æœªå“åº”[%s]æ–¹æ³•ï¼', [FSessionName, AMethodName]);
     Exit;    
   end
   else
